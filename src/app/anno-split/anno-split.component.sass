@@ -1,0 +1,123 @@
+\:host
+  width: 100%
+  height: var(--annoCard_borderWidth)
+  background: var(--annoCard_BG)
+  border: var(--annoCard_borderWidth) solid var(--annoCard_BG)
+  border-left: none
+  border-right: none
+  display: block
+  text-align: center
+  position: relative
+  z-index: 1
+
+
+  &::after
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+    background: var(--annoCard_splitC)
+    z-index: 0
+
+  &.fade::after
+    background-image: linear-gradient(to left, transparent, var(--annoCard_splitC), transparent)
+    background-color: transparent
+
+  &.transparentTop
+    border-top: none
+
+    &:not(.noDia)::before
+      border-left-color: transparent
+      border-top-color: transparent
+
+  &.transparentBottom
+    border-bottom: none
+
+    &:not(.noDia)::before
+      border-right-color: transparent
+      border-bottom-color: transparent
+
+
+  &:not(.noDia)::before
+    content: ""
+    display: block
+    position: absolute
+    left: 50%
+    top: 50%
+    width: calc(var(--annoCard_borderWidth) * 10)
+    height: calc(var(--annoCard_borderWidth) * 10)
+    box-sizing: border-box
+    border: calc(var(--annoCard_borderWidth) * 2) solid var(--annoCard_BG)
+    background-color: transparent
+    transform-origin: center
+    transform: translate(-50%, -50%) rotate(45deg)
+    z-index: -1
+
+
+  //&::after
+  //  content: ''
+  //  position: absolute
+  //  height: var(--annoCard_borderWidth)
+  //  top: var(--annoCard_borderWidth)
+  //  width: 100%
+  //  left: 0
+  //  background: var(--annoCard_splitC)
+  //  z-index: 1
+
+  &.noDia > div.dia
+    display: none
+
+  > div.dia
+    position: absolute
+    left: 50%
+    top: 0
+    width: calc(var(--annoCard_borderWidth) * 10)
+    height: calc(var(--annoCard_borderWidth) * 10)
+    background: var(--annoCard_splitC)
+    margin-top: calc(var(--annoCard_borderWidth) * .5)
+    display: inline-block
+    transform-origin: center
+    transform: translate(-50%, -50%) rotate(45deg)
+    box-sizing: border-box
+    z-index: 2
+
+    &.small
+      width: calc(var(--annoCard_borderWidth) * 6)
+      height: calc(var(--annoCard_borderWidth) * 6)
+
+      &.inset
+        width: calc(var(--annoCard_borderWidth) * 8)
+        height: calc(var(--annoCard_borderWidth) * 8)
+
+    &::after,
+    &::before
+      content: ''
+      position: absolute
+
+
+    //left: -100%
+    //top: calc(50% - var(--annoCard_borderWidth) * .5)
+    //height: var(--annoCard_borderWidth)
+    //width: 300%
+    //transform-origin: center
+    //transform: rotate(-45deg)
+    //background: var(--annoCard_splitC)
+
+    &::after
+      left: var(--annoCard_borderWidth)
+      top: var(--annoCard_borderWidth)
+      width: calc(100% - var(--annoCard_borderWidth) * 2)
+      height: calc(100% - var(--annoCard_borderWidth) * 2)
+      background: var(--annoCard_BG)
+      z-index: 2
+      box-sizing: border-box
+
+    &.inset::after
+      background: var(--annoCard_splitC)
+      border: solid var(--annoCard_borderWidth) var(--annoCard_BG)
+
+
+
+

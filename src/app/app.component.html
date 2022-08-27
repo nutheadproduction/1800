@@ -1,0 +1,50 @@
+<mat-toolbar>
+  <span>{{title}}</span>
+  <span class="example-spacer"></span>
+
+  <div *ngIf="(settings.modsDir|async)!==null" class="inline">
+    <mat-form-field class="search-form-field" appearance="fill" color="accent" [class.inUse]="searchTerm!==''">
+      <mat-label>Search trough your Mods</mat-label>
+      <span matPrefix><mat-icon>search</mat-icon></span>
+      <input matInput type="text" [(ngModel)]="searchTerm">
+      <button *ngIf="searchTerm" matSuffix mat-icon-button aria-label="Clear" (click)="searchTerm=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+            (click)="state='settings'">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+            (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Language</mat-label>
+      <span matPrefix><mat-icon>language</mat-icon></span>
+      <mat-select [(ngModel)]="annoModRef.lng">
+        <mat-option *ngFor="let lng of annoModRef.lngs" [value]="lng">{{lng}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</mat-toolbar>
+
+<div class="CTS" *ngIf="!settings.loaded">
+  <p>no installation needed - just manage your Anno 1800 mods</p>
+  <button mat-raised-button color="primary" (click)="load()">
+    Start managing your mods
+  </button>
+  <br/>
+  <br/>
+  <br/>
+</div>
+
+
+<app-settings *ngIf="state=='settings'" (close)="closeSettings()"></app-settings>
+
+<app-mod-list appDropMod (fileDropped)="uploadedFile($event)" *ngIf="state=='home'" [searchTerm]="searchTerm"></app-mod-list>

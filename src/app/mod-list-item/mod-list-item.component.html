@@ -1,0 +1,44 @@
+<mat-card *ngIf="mod" class="anno">
+  <mat-card-header>
+    <mat-card-title>{{mod.name}}</mat-card-title>
+    <mat-card-subtitle>
+      [{{mod.category}}] <span *ngIf="mod.version">v{{mod.version}}</span>
+    </mat-card-subtitle>
+    <mat-slide-toggle color="accent" [disabled]="(mod.locked|async)==true" [(ngModel)]="mod.enabled"></mat-slide-toggle>
+
+
+    <button class="options" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item disabled>
+        <mat-icon>download</mat-icon>
+        <span>Pack & Download (soon)</span>
+      </button>
+      <button mat-menu-item class="alert" (click)="mod.uninstall()">
+        <mat-icon>delete_outline</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+
+
+  </mat-card-header>
+  <app-anno-split [small]="true"></app-anno-split>
+  <img mat-card-image [src]="mod.image" alt="Anno Mod Title image" (click)="active=!active;">
+  <mat-card-content>
+    <app-anno-split [small]="true" [fade]="true" [borderBottom]="false" [borderTop]="false" [inset]="false"
+                    [diamond]="false"></app-anno-split>
+    <mat-progress-bar *ngIf="mod.locked|async" mode="indeterminate"></mat-progress-bar>
+    <p>
+      {{mod.description}}
+    </p>
+    <app-anno-split [small]="true" [fade]="true" [borderBottom]="false" [borderTop]="false" [inset]="false"
+                    [diamond]="true"></app-anno-split>
+  </mat-card-content>
+  <mat-card-footer style="text-align: center">
+    <button mat-button (click)="active=!active;">
+      <mat-icon *ngIf="!active">keyboard_arrow_down</mat-icon>
+      <mat-icon *ngIf="active">keyboard_arrow_up</mat-icon>
+    </button>
+  </mat-card-footer>
+</mat-card>

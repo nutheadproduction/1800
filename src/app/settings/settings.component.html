@@ -1,0 +1,56 @@
+<mat-card class="example-card">
+  <mat-card-title>Settings</mat-card-title>
+  <mat-card-content>
+
+    <div></div>
+    <fieldset>
+      <legend>What Anno 1800 Content DLCs are installed (optional)</legend>
+      <mat-slide-toggle *ngFor="let dlc of contentDLCs();"
+                        color="accent"
+                        [(ngModel)]="dlc.isActive"
+                        (change)="settings.save()"
+                        [class]="'type_'+dlc.type">
+        {{dlc.name}}
+      </mat-slide-toggle>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>What Anno 1800 Cosmetics are installed (optional)</legend>
+      <mat-slide-toggle *ngFor="let dlc of cosmeticDLCs();"
+                        color="accent"
+                        [(ngModel)]="dlc.isActive"
+                        (change)="settings.save()"
+                        [class]="'type_'+dlc.type">
+        {{dlc.name}}
+      </mat-slide-toggle>
+
+    </fieldset>
+    <section *ngIf="!settings.inSelection" class="flex">
+
+      <button mat-raised-button [color]="settings.connected?'primary':'warn'" (click)="settings.selectFolder()">
+        Select {{settings.connected ? 'another' : ''}} Anno 1800 Documents Folder
+      </button>
+
+      <span class="fill-space"></span>
+    </section>
+    <section *ngIf="settings.inSelection">
+      <h3>Anno folder selection in progress</h3>
+      <mat-progress-bar mode="query"></mat-progress-bar>
+    </section>
+
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+  <mat-card-actions class="flex">
+    <span class="fill-space"></span>
+    <button mat-raised-button [color]="settings.connected?'primary':undefined" (click)="close.emit()">
+      close
+    </button>
+  </mat-card-actions>
+  <!--  <mat-card-footer>-->
+  <!--    <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
+  <!--  </mat-card-footer>-->
+</mat-card>
+
+
+

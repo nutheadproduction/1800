@@ -1,0 +1,42 @@
+\:host
+  width: 30%
+  min-width: 350px
+  max-width: 400px
+  flex-grow: 1
+  transition: opacity 0.5s ease, width 0.5s ease
+
+  mat-card
+
+
+    mat-card-header
+      button.options
+        position: absolute
+        top: 50%
+        left: calc(100% - 30px)
+        transform: translate(-50%, -50%)
+        min-width: 50px
+        padding: 0
+      mat-menu button.alert
+        color: red
+
+
+    img[mat-card-image]
+      cursor: pointer
+
+    mat-card-content
+      p
+        min-height: 5em
+        max-height: 5em
+        overflow: hidden
+        transition: max-height 0.7s ease
+
+  &.active
+
+    img[mat-card-image]
+      max-height: 20em
+
+    mat-card-content
+      p
+        max-height: 15em
+        white-space: normal
+

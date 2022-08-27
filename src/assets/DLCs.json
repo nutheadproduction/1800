@@ -1,0 +1,114 @@
+{
+  "dlc": [
+    {
+      "name": "Anarchist",
+      "id": 1,
+      "type": "content"
+    },
+    {
+      "name": "SunkenTreasures",
+      "id": 2,
+      "type": "content"
+    },
+    {
+      "name": "Botanica",
+      "id": 3,
+      "type": "content"
+    },
+    {
+      "name": "ThePassage",
+      "id": 4,
+      "type": "content"
+    },
+    {
+      "name": "SeatOfPower",
+      "id": 5,
+      "type": "content"
+    },
+    {
+      "name": "BrightHarvest",
+      "id": 6,
+      "type": "content"
+    },
+    {
+      "name": "LandOfLions",
+      "id": 7,
+      "type": "content"
+    },
+    {
+      "name": "Docklands",
+      "id": 8,
+      "type": "content"
+    },
+    {
+      "name": "Tourism",
+      "id": 9,
+      "type": "content"
+    },
+    {
+      "name": "Highlife",
+      "id": 10,
+      "type": "content"
+    },
+    {
+      "name": "SeedsOfChange",
+      "id": 11,
+      "type": "content"
+    },
+    {
+      "name": "EmpireOfTheSkies",
+      "id": 12,
+      "type": "content"
+    },
+    {
+      "name": "NewWorldRising",
+      "id": 13,
+      "type": "content"
+    },
+    {
+      "name": "Christmas",
+      "id": 201,
+      "type": "cosmetic"
+    },
+    {
+      "name": "AmusementPark",
+      "id": 202,
+      "type": "cosmetic"
+    },
+    {
+      "name": "CityLife",
+      "id": 203,
+      "type": "cosmetic"
+    },
+    {
+      "name": "VehicleSkins",
+      "id": 204,
+      "type": "cosmetic"
+    },
+    {
+      "name": "VibrantCity",
+      "id": 205,
+      "type": "cosmetic"
+    },
+    {
+      "name": "PedestrianZone",
+      "id": 206,
+      "type": "cosmetic"
+    },
+    {
+      "name": "SeasonalDecorations",
+      "id": 207,
+      "type": "cosmetic"
+    },
+    {
+      "name": "IndustryOrnaments",
+      "id": 208,
+      "type": "cosmetic"
+    },
+    {
+      "name": "CDLC09",
+      "id": 209,
+      "type": "unknown"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+\:host
+  .anno-mods
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+    align-content: space-around
+    gap: 20px
+    padding: 20px
+
+  .dropMark
+    pointer-events: none
+    opacity: 0
+    backdrop-filter: blur(0px)
+    transition: all 0.5s ease
+
+  &.fileOver
+    .anno-mods
+      app-mod-list-item
+        opacity: 0.5
+
+    .dropMark
+      position: fixed
+      display: flex
+      align-items: center
+      justify-content: center
+      left: 0
+      top: 0
+      width: 100%
+      height: 100%
+      font-size: 5em
+      backdrop-filter: blur(10px)
+      opacity: 1
+
+      > div
+        width: auto
+        //line-height: 3em
+        padding: 1em 3em
+        border: 3px dashed #ffffff
+        color: #ffffff
+        background: rgba(0, 0, 0, 0.4)
