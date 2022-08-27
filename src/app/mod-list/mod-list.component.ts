@@ -27,7 +27,6 @@ export class ModListComponent implements OnInit {
       .map((mod) => {
         const score = mod.searchScore(this.searchTerm);
         scoreSum += scoreSum;
-        console.info(mod.name, score);
         return { score: score, mod: mod }
       });
 

@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>{{mod.name}}</mat-card-title>
     <mat-card-subtitle>
-      [{{mod.category}}] <span *ngIf="mod.version">v{{mod.version}}</span>
+      [{{mod.category}}] <span *ngIf="mod.version && mod.version!=='unknown'">v{{mod.version}}</span>
     </mat-card-subtitle>
     <mat-slide-toggle color="accent" [disabled]="(mod.locked|async)==true" [(ngModel)]="mod.enabled"></mat-slide-toggle>
 
@@ -15,7 +15,12 @@
         <mat-icon>download</mat-icon>
         <span>Pack & Download (soon)</span>
       </button>
-      <button mat-menu-item class="alert" (click)="mod.uninstall()">
+      <button mat-menu-item *ngIf="mod.generated">
+        <mat-icon>edit</mat-icon>
+        <span>Edit Mod-infos</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="mod.uninstall()">
         <mat-icon>delete_outline</mat-icon>
         <span>Delete</span>
       </button>
