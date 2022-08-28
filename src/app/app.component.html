@@ -33,17 +33,23 @@
   </div>
 
 </mat-toolbar>
+<div class="content" [class.blured]="state=='home'">
 
-<div class="CTS" *ngIf="!settings.loaded">
-  <button mat-raised-button color="primary" (click)="load()">
-    Start managing your mods
-  </button>
-  <br/>
-  <br/>
-  <br/>
+  <div class="CTS" *ngIf="!settings.loaded">
+    <button mat-raised-button color="primary" (click)="load()">
+      Start managing your mods
+    </button>
+    <br/>
+    <br/>
+    <br/>
+  </div>
+
+
+  <app-settings *ngIf="state=='settings'" (close)="closeSettings()"></app-settings>
+
+  <app-mod-list appDropMod (fileDropped)="uploadedFile($event)" *ngIf="state=='home'"
+                [searchTerm]="searchTerm"></app-mod-list>
+
+  <div class="backdrop"></div>
+
 </div>
-
-
-<app-settings *ngIf="state=='settings'" (close)="closeSettings()"></app-settings>
-
-<app-mod-list appDropMod (fileDropped)="uploadedFile($event)" *ngIf="state=='home'" [searchTerm]="searchTerm"></app-mod-list>

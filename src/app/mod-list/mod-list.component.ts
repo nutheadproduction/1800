@@ -1,19 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ModManagerService } from "../mod-manager.service";
 import { AnnoMOD } from "../AnnoMOD";
+import { Sort } from "@angular/material/sort";
 
 @Component({
   selector: 'app-mod-list',
   templateUrl: './mod-list.component.html',
   styleUrls: ['./mod-list.component.sass']
 })
-export class ModListComponent implements OnInit {
+export class ModListComponent implements OnInit, OnChanges {
 
-  constructor(public modService: ModManagerService) { }
+  constructor(public modService: ModManagerService) {
+  }
 
   @Input() searchTerm: string = '';
+  @Input() cardView: boolean = true;
+
+  displayedColumns = ["enabled", "title", "info", "actions"];
+
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges() {
   }
 
   sortedMods(): AnnoMOD[] {
@@ -30,7 +39,6 @@ export class ModListComponent implements OnInit {
         return { score: score, mod: mod }
       });
 
-    console.info(scoreSum);
 
     return scores
       .filter(value => {return value.score > 0})
@@ -44,4 +52,7 @@ export class ModListComponent implements OnInit {
     // });
   }
 
+  sortData($event: Sort) {
+
+  }
 }

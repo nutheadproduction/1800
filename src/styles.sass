@@ -34,18 +34,12 @@ $annoCard_borderWidth: 3px
   --annoCard_borderRad: 4px
   --annoCard_borderWidth: 3px
 
-body
+body,
+html
   margin: 0
-
-#backroot
-  position: fixed
-  left: 0
-  top: 0
-  width: 100vw
-  height: 100vh
-  background: url("assets/bg.png") no-repeat center center white
-  background-size: cover
-  z-index: -1
+  height: 100%
+  width: 100%
+  overflow: hidden
 
 .fill-space
   // This fills the remaining space, by using flexbox.
@@ -148,4 +142,5 @@ mat-card.anno
 //width: calc(100% + 32px)
 //margin: 0 -16px 0 -16px
 
-
+.pull-right
+  float: right

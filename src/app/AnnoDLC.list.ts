@@ -1,6 +1,6 @@
 export type AnnoDLC_type = "unknown" | "cosmetic" | "content";
 
-export enum AnnoDLCs {
+export enum AnnoDLC_list {
   Anarchist,
   SunkenTreasures,
   Botanica,
@@ -19,10 +19,10 @@ export enum AnnoDLCs {
   Christmas = 200,
   AmusementPark,
   CityLife,
-  VehicleSkins,
-  VibrantCity,
+  VehicleSkins, //no image
+  VibrantCity, //no image
   PedestrianZone,
   SeasonalDecorations,
   IndustryOrnaments,
-  CDLC09
+  PlantOneTree
 }

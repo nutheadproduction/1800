@@ -1,6 +1,28 @@
-<div class="anno-mods">
+<div *ngIf="cardView" class="anno-mods anno-mods-cards">
   <app-mod-list-item *ngFor="let mod of sortedMods()" [mod]="mod"></app-mod-list-item>
 </div>
+
+<div *ngIf="!cardView" class="anno-mods anno-table">
+  <table matSort (matSortChange)="sortData($event)">
+    <tr>
+      <th mat-sort-header="name">Dessert (100g)</th>
+      <th mat-sort-header="calories">Enabled</th>
+      <th mat-sort-header="fat">Category</th>
+      <th mat-sort-header="carbs">Carbs (g)</th>
+      <th mat-sort-header="protein">Protein (g)</th>
+    </tr>
+
+    <tr *ngFor="let mod of sortedMods()">
+      <td>{{mod.name}}</td>
+      <td>{{mod.enabled}}</td>
+      <td>{{mod.category}}</td>
+      <td>{{mod.tags.join(', ')}}</td>
+      <td>{{mod.modID}}</td>
+    </tr>
+  </table>
+</div>
+
+
 <div class="dropMark">
   <div>Drop a Mod to install</div>
 </div>

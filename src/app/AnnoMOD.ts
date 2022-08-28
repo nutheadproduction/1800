@@ -1,6 +1,8 @@
 import { SettingsService } from "./settings.service";
 import { BehaviorSubject } from "rxjs";
 import { readUploadedFile } from "./helper";
+import { AnnoDLC } from "./AnnoDLC";
+import { AnnoDLC_list } from "./AnnoDLC.list";
 
 
 export namespace AnnoModConfig {
@@ -36,34 +38,41 @@ export namespace AnnoModConfig {
 
   export type ModID = string;
 
-  export type DLCid =
-    "Anarchist" |
-    "SunkenTreasures" |
-    "Botanica" |
-    "ThePassage" |
-    "SeatOfPower" |
-    "BrightHarvest" |
-    "LandOfLions" |
-    "Docklands" |
-    "Tourism" |
-    "Highlife" |
-    "SeedsOfChange" |
-    "EmpireOfTheSkies" |
-    "NewWorldRising" |
-    //cosmetics
-    "Christmas" |
-    "AmusementPark" |
-    "CityLife" |
-    "VehicleSkins" |
-    "VibrantCity" |
-    "PedestrianZone" |
-    "SeasonalDecorations" |
-    "IndustryOrnaments";
+  // export type DLCid =
+  //   "Anarchist" |
+  //   "SunkenTreasures" |
+  //   "Botanica" |
+  //   "ThePassage" |
+  //   "SeatOfPower" |
+  //   "BrightHarvest" |
+  //   "LandOfLions" |
+  //   "Docklands" |
+  //   "Tourism" |
+  //   "Highlife" |
+  //   "SeedsOfChange" |
+  //   "EmpireOfTheSkies" |
+  //   "NewWorldRising" |
+  //   //cosmetics
+  //   "Christmas" |
+  //   "AmusementPark" |
+  //   "CityLife" |
+  //   "VehicleSkins" |
+  //   "VibrantCity" |
+  //   "PedestrianZone" |
+  //   "SeasonalDecorations" |
+  //   "IndustryOrnaments";
 
   export interface DLCDependency {
-    "DLC": DLCid,
-    "Dependant": "required" | "partly" | "atLeastOneRequired"
+    "DLC": AnnoDLC_list,
+    "Dependant": DLCDependencyType
   }
+
+  export interface DLCDependencyLinked {
+    "DLC": AnnoDLC,
+    "Dependant": DLCDependencyType
+  }
+
+  export type DLCDependencyType = "required" | "partly" | "atLeastOneRequired";
 
   export interface i18n {
     English: string,
@@ -108,7 +117,13 @@ export class AnnoMOD {
 
   public static readonly repo = new Map<string, AnnoMOD>();
 
+  public static updateAll() {
+    for (const [id, mod] of this.repo) {
+      mod.update();
+    }
+  }
 
+  //region Static stuff
   static i18nString(text: AnnoModConfig.i18n): string {
     if (this.lng in text && text[this.lng])
       return text[this.lng] + '';
@@ -137,7 +152,6 @@ export class AnnoMOD {
       }
 
       const modIDs = (await Promise.all(allProm)).map(value => value.ModID);
-      console.info('modIDs', modIDs);
       //remove non-existing mods
       for (const key of this.repo.keys()) {
         if (modIDs.indexOf(key) === -1) {
@@ -214,7 +228,6 @@ export class AnnoMOD {
 
       dirHandle.getFileHandle('modinfo.json', { create: true }).then(async (fileHandle) => {
         try {
-          console.info('modinfo.json', fileHandle);
           const fileData = await fileHandle.getFile();
           const fileContent = await fileData.text();
           let data: AnnoModConfig.ModInfo | null;
@@ -252,7 +265,9 @@ export class AnnoMOD {
     this.settings.modsDir.subscribe(this.load.bind(this));
   }
 
+  //endregion
 
+  //region Getter & Setter
   get creatorName(): string {
     return this._creatorName;
   }
@@ -309,7 +324,7 @@ export class AnnoMOD {
     if (this._image) return this._image;
     if (this._imgFallback) return this._imgFallback;
     // if()
-    return "assets/bg.png";
+    return "assets/bg.jpg";
   }
 
   get origin(): string {
@@ -331,6 +346,7 @@ export class AnnoMOD {
 
   set enabled(val: boolean) {
     if (val == this.enabled) return; //no changes made
+    if (!this.usable && !this.enabled) return;
     if (this.locked.getValue()) return; //no not change if locked
     const modsDir = this.self.settings.modsDir.getValue();
     if (modsDir === null) return; //no modsDir => just in case
@@ -373,7 +389,66 @@ export class AnnoMOD {
   }
 
 
-  public readonly locked = new BehaviorSubject<boolean>(true);
+  get DLCs(): AnnoDLC[] {
+    return this._DLCs;
+  }
+
+  get DLCs_leastOne(): AnnoDLC[] {
+    return this._DLCs_leastOne;
+  }
+
+  get DLCs_leastOneNeeded(): AnnoDLC[] {
+    return this.DLCs_leastOne.filter(dlc => !dlc.isActive)
+  }
+
+  get DLCs_required(): AnnoDLC[] {
+    return this._DLCs_required;
+  }
+
+  get DLCs_requiredNeeded(): AnnoDLC[] {
+    return this.DLCs_required.filter(dlc => !dlc.isActive)
+  }
+
+
+  get DLCs_optional(): AnnoDLC[] {
+    return this._DLCs_optional;
+  }
+
+  get MODs_incompatible(): AnnoMOD[] {
+    return [...this.self.repo.values()].filter(mod => this._incompatibleIds.includes(mod.modID));
+  }
+
+  get MODs_required(): AnnoMOD[] {
+    return [...this.self.repo.values()].filter(mod => this._modDependencies.includes(mod.modID));
+  }
+
+
+  get changeable(): boolean {
+    if (this.locked.getValue()) return false;
+    if (!this.usable) return false;
+    return true;
+  }
+
+  get usable(): boolean {
+    if (this.DLCs_requiredNeeded.length > 0) return false; //match all
+    if (this.DLCs_leastOneNeeded.length > 0) return false; //at least one
+
+    if (this.MODs_incompatible.filter(mod => mod.enabled).length)
+      return false; //if any incompatible mod is enabled
+    if (this.MODs_required.filter(mod => !mod.enabled).length)
+      return false; //if any required mod is disabled
+
+    return true;
+  }
+
+  //endregion
+
+  private _DLCs: AnnoDLC[] = [];
+  private _DLCs_required: AnnoDLC[] = [];
+  private _DLCs_optional: AnnoDLC[] = [];
+  private _DLCs_leastOne: AnnoDLC[] = [];
+
+  public readonly locked = new BehaviorSubject<boolean>(false);
   private _folder_name: string;
 
   private _version: AnnoModConfig.VersionNumber = "0.0.0"; //e.g. "1.0.0",
@@ -403,25 +478,6 @@ export class AnnoMOD {
   constructor(private _id: string, private _handle: FileSystemDirectoryHandle) {
     this._folder_name = _handle.name;
     this.self.repo.set(_id, this);
-    //Todo: this.self.repo.set()
-    this.locked.asObservable().subscribe(async (value) => {
-      await this.loadFallbackImg();
-    });
-    this.locked.next(false);
-  }
-
-  public loadFallbackImg() {
-    if (this._image) return;
-    if (this._imgFallback != '') return;
-    setTimeout(async () => {
-      for await (const [name, handle] of this._handle.entries()) {
-        if (this._imgFallback) break;
-        if (handle.kind == "directory") continue;
-        if (!name.match(/\.(jpe?g|png|gif)$/i)) continue;
-        const file = await handle.getFile();
-        this._imgFallback = await readUploadedFile.asDataURL(file);
-      }
-    }, 500);
   }
 
   public ingest(data: AnnoModConfig.ModInfo) {
@@ -441,6 +497,7 @@ export class AnnoMOD {
 
     this._tags = data.Tags || this._tags;
     this._origin = data.Origin || this._origin;
+    this.update();
   }
 
   public getFile(filename: string): Promise<FileSystemFileHandle> {
@@ -512,5 +569,38 @@ export class AnnoMOD {
   //
   //   })
   // }
+  public update() {
+    if (!this._image && !this._imgFallback) {
+      setTimeout(async () => {
+        for await (const [name, handle] of this._handle.entries()) {
+          if (this._imgFallback) break;
+          if (handle.kind == "directory") continue;
+          if (!name.match(/\.(jpe?g|png|gif)$/i)) continue;
+          const file = await handle.getFile();
+          this._imgFallback = await readUploadedFile.asDataURL(file);
+        }
+      }, 500);
+    }
+
+    this._DLCs = this._dlcDependencies.map((dep) => {
+      return AnnoDLC.get(dep.DLC)
+        || new AnnoDLC(Math.max(500, AnnoDLC.largestID() + 1), dep.DLC + '')
+    });
+
+
+    this._DLCs_leastOne = this._dlcDependencies
+      .filter(dep => dep.Dependant === "atLeastOneRequired")
+      .map(dep => AnnoDLC.getOrUnknown(dep.DLC));
+
+    this._DLCs_required = this._dlcDependencies
+      .filter(dep => dep.Dependant === "required")
+      .map(dep => AnnoDLC.getOrUnknown(dep.DLC));
+
+    this._DLCs_optional = this._dlcDependencies
+      .filter(dep => dep.Dependant === "partly")
+      .map(dep => AnnoDLC.getOrUnknown(dep.DLC));
+
+
+  }
 }
 

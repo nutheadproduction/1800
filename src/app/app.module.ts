@@ -29,6 +29,9 @@ import { AnnoSplitComponent } from './anno-split/anno-split.component';
 import { AnnoIconComponent } from './anno-icon/anno-icon.component';
 import { DropModDirective } from './direcitves/drop-mod.directive';
 import { MatMenuModule } from "@angular/material/menu";
+import { MatTableModule } from "@angular/material/table";
+import { MatSortModule } from "@angular/material/sort";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -41,33 +44,36 @@ import { MatMenuModule } from "@angular/material/menu";
     AnnoIconComponent,
     DropModDirective
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: environment.production,
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000'
-        }),
-        MatGridListModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatCommonModule,
-        MatCardModule,
-        MatDividerModule,
-        MatProgressBarModule,
-        MatCheckboxModule,
-        FormsModule,
-        MatTooltipModule,
-        MatSnackBarModule,
-        MatSlideToggleModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatMenuModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    MatGridListModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCommonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatCheckboxModule,
+    FormsModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

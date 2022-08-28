@@ -10,6 +10,8 @@
                         [(ngModel)]="dlc.isActive"
                         (change)="settings.save()"
                         [class]="'type_'+dlc.type">
+
+        <app-anno-icon [icon]="dlc.name"></app-anno-icon>
         {{dlc.name}}
       </mat-slide-toggle>
 
@@ -22,6 +24,7 @@
                         [(ngModel)]="dlc.isActive"
                         (change)="settings.save()"
                         [class]="'type_'+dlc.type">
+        <app-anno-icon [icon]="dlc.name"></app-anno-icon>
         {{dlc.name}}
       </mat-slide-toggle>
 

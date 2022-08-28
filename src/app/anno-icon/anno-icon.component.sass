@@ -1,0 +1,45 @@
+$iconOverScan: 0.1em
+
+$DLCs: "Anarchist", "SunkenTreasures", "Botanica", "ThePassage", "SeatOfPower", "BrightHarvest", "LandOfLions", "Docklands", "Tourism", "Highlife", "SeedsOfChange", "EmpireOfTheSkies", "NewWorldRising", "Christmas", "AmusementPark", "CityLife", "VehicleSkins", "VibrantCity", "PedestrianZone", "SeasonalDecorations", "IndustryOrnaments", "PlantOneTree"
+
+@mixin iconImg($name)
+  &.icon-#{to-lower-case(#{$name})}:after
+    background-image: url("../../assets/anno/icons/#{$name}.png")
+
+\:host
+  width: 2em + ($iconOverScan*2)
+  display: inline-block
+  position: relative
+  visibility: hidden
+  &:before
+    content: " "
+    visibility: visible
+    display: inline-block
+
+
+  &:after
+    content: ""
+    position: absolute
+    left: 50%
+    top: calc(50% - 3%)
+    min-height: 1em + ($iconOverScan*2)
+    height: 100%
+    background: no-repeat center center transparent
+    background-size: contain
+    visibility: visible
+    transform: translate(-50%, -50%)
+    aspect-ratio: 1/1
+    filter: drop-shadow(0 0 2px black)
+  &.alert:after
+    filter: drop-shadow(1px 1px 5px red)
+
+  @each $dlc in $DLCs
+    @include iconImg($dlc)
+
+//&.icon-anarchist:after
+//  background-image: url("../../assets/anno/icons/Anarchist.png")
+//
+//&.icon-sunkentreasures:after
+//  background-image: url("../../assets/anno/icons/SunkenTreasures.png")
+
+

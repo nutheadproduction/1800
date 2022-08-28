@@ -1,10 +1,12 @@
 <mat-card *ngIf="mod" class="anno">
   <mat-card-header>
-    <mat-card-title>{{mod.name}}</mat-card-title>
+    <mat-card-title [title]="mod.id">{{mod.name}}</mat-card-title>
     <mat-card-subtitle>
       [{{mod.category}}] <span *ngIf="mod.version && mod.version!=='unknown'">v{{mod.version}}</span>
     </mat-card-subtitle>
-    <mat-slide-toggle color="accent" [disabled]="(mod.locked|async)==true" [(ngModel)]="mod.enabled"></mat-slide-toggle>
+    <mat-slide-toggle color="accent"
+                      [disabled]="((mod.locked|async) || (!mod.usable && !mod.enabled))"
+                      [(ngModel)]="mod.enabled"></mat-slide-toggle>
 
 
     <button class="options" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
@@ -33,10 +35,29 @@
   <mat-card-content>
     <app-anno-split [small]="true" [fade]="true" [borderBottom]="false" [borderTop]="false" [inset]="false"
                     [diamond]="false"></app-anno-split>
+
+    <div class="req_dlcs">
+      <app-anno-icon *ngFor="let dlc of mod.DLCs_required"
+                     [class.pull-right]="!dlc.isActive"
+                     [alert]="!dlc.isActive"
+                     [icon]="dlc.name"
+                     [title]="dlc.title"></app-anno-icon>
+
+      <app-anno-icon *ngFor="let dlc of mod.DLCs_leastOneNeeded"
+                     class="pull-right"
+                     [warning]="true"
+                     [icon]="dlc.name"
+                     [title]="dlc.title"></app-anno-icon>
+    </div>
     <mat-progress-bar *ngIf="mod.locked|async" mode="indeterminate"></mat-progress-bar>
     <p>
       {{mod.description}}
     </p>
+    <span *ngFor="let mod of mod.MODs_incompatible">Incompatible with: {{mod.name}}</span>
+
+    <span *ngFor="let mod of mod.MODs_required">Required: {{mod.name}}</span>
+
+
     <app-anno-split [small]="true" [fade]="true" [borderBottom]="false" [borderTop]="false" [inset]="false"
                     [diamond]="true"></app-anno-split>
   </mat-card-content>

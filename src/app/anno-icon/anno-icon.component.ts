@@ -1,20 +1,34 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
+import { AnnoDLC_list } from "../AnnoDLC.list";
+
 
 @Component({
   selector: 'app-anno-icon',
-  template: '',
+  template: `
+    <ng-content></ng-content>&nbsp;`,
   styleUrls: ['./anno-icon.component.sass'],
   host: {
-    // "[style.backgroundImage]"=""
+    'class': 'anno-icon notranslate',
+    '[class]': "'icon-'+icon.toLowerCase()",
+    '[class.alert]': "alert",
+    '[class.warning]': "alert"
   }
 })
-export class AnnoIconComponent implements OnInit {
+export class AnnoIconComponent implements OnInit, OnChanges {
 
-  @Input() icon: string = "SunkenTreasures";
+  @Input() icon: string = "";
+  @Input() alert: boolean = false;
+  @Input() warning: boolean = false;
+  private nativeElement: HTMLElement;
 
-  constructor() { }
+  constructor(private elt: ElementRef) {
+    this.nativeElement = (this.elt.nativeElement as HTMLElement);
+  }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges() {
   }
 
 }
