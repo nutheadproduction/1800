@@ -1,4 +1,5 @@
 <mat-card *ngIf="mod">
+  <mat-progress-bar *ngIf="mod.locked|async" mode="indeterminate"></mat-progress-bar>
   <mat-card-header>
     <mat-slide-toggle color="accent"
                       [disabled]="((mod.locked|async) || (!mod.usable && !mod.enabled))"
@@ -7,16 +8,19 @@
       {{mod.name}}
       <small *ngIf="slim">
         {{mod.category}}
-        <span>v{{mod.version !== 'unknown' ? mod.version : '#'}}</span>
+        <span>v{{mod.version !== 'unknown' ? mod.version : '#.#.#'}}</span>
       </small>
     </mat-card-title>
     <mat-card-subtitle *ngIf="!slim">
       {{mod.category || '---'}}
-      <span>v{{mod.version !== 'unknown' ? mod.version : '#'}}</span> &nbsp;
+      <span>v{{mod.version !== 'unknown' ? mod.version : '#.#.#'}}</span> &nbsp;
     </mat-card-subtitle>
 
 
-    <button class="options" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <button mat-icon-button
+            class="options"
+            [disabled]="(mod.locked|async)"
+            [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -58,7 +62,6 @@
                     [diamond]="false"></app-anno-split>
 
 
-    <mat-progress-bar *ngIf="mod.locked|async" mode="indeterminate"></mat-progress-bar>
     <p>
       {{mod.description}}
     </p>

@@ -313,7 +313,13 @@ export class AnnoMOD {
   }
 
   get version(): AnnoModConfig.VersionNumber {
-    return this._version;
+    if (this._version === 'unknown') return this._version;
+    let v: number[] = this._version.split('.').map(value => (parseInt(value.trim()) || 0));
+
+    while (v.length < 3) v.push(0)
+    v = v.slice(0, 3);
+
+    return (v.join('.') as AnnoModConfig.VersionNumber);
   }
 
   get creatorContact(): string {

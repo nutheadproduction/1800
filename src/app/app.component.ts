@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   annoModRef = AnnoMOD;
   viewStyle: string[] = [];
 
-  viewSlim = false;
+  viewSlim = true;
   filterEnabledOnly: boolean | null = null;
   filterDlcReady: boolean | null = null;
 

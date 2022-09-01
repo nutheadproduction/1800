@@ -39,6 +39,7 @@ $annoCard_borderWidth: 3px
         width: calc(100% - 110px - 180px)
         top: 1.8em
         z-index: 9
+        font-size: 17px
 
 
       mat-card-header
@@ -104,11 +105,16 @@ $annoCard_borderWidth: 3px
 
     div.req_dlcs
       position: absolute
-      left: 12px
-      width: calc(100% - 24px)
+      left: 4px
+      width: calc(100% - 8px)
       z-index: 9
-      margin-top: -0.8em
+      margin-top: -0.4em
       font-size: 30px
+
+    mat-progress-bar
+      position: absolute
+      top: 0
+      width: 100%
 
     mat-card-header
       width: 100%
@@ -119,6 +125,7 @@ $annoCard_borderWidth: 3px
       position: relative
       border-top-left-radius: $annoCard_borderRad
       border-top-right-radius: $annoCard_borderRad
+
 
       mat-card-title
         cursor: pointer
