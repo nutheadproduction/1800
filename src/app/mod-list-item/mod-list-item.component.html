@@ -1,12 +1,19 @@
-<mat-card *ngIf="mod" class="anno">
+<mat-card *ngIf="mod">
   <mat-card-header>
-    <mat-card-title [title]="mod.id">{{mod.name}}</mat-card-title>
-    <mat-card-subtitle>
-      [{{mod.category}}] <span *ngIf="mod.version && mod.version!=='unknown'">v{{mod.version}}</span>
-    </mat-card-subtitle>
     <mat-slide-toggle color="accent"
                       [disabled]="((mod.locked|async) || (!mod.usable && !mod.enabled))"
                       [(ngModel)]="mod.enabled"></mat-slide-toggle>
+    <mat-card-title [title]="mod.id" (click)="toggleSelected()">
+      {{mod.name}}
+      <small *ngIf="slim">
+        {{mod.category}}
+        <span>v{{mod.version !== 'unknown' ? mod.version : '#'}}</span>
+      </small>
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="!slim">
+      {{mod.category || '---'}}
+      <span>v{{mod.version !== 'unknown' ? mod.version : '#'}}</span> &nbsp;
+    </mat-card-subtitle>
 
 
     <button class="options" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
@@ -32,23 +39,25 @@
   </mat-card-header>
   <app-anno-split [small]="true"></app-anno-split>
   <img mat-card-image [src]="mod.image" alt="Anno Mod Title image" (click)="active=!active;">
+  <div class="req_dlcs">
+    <app-anno-icon *ngFor="let dlc of mod.DLCs_required"
+                   [class.pull-right]="!dlc.isActive"
+                   [alert]="!dlc.isActive"
+                   [icon]="dlc.name"
+                   [title]="(dlc.isActive?'':'Requires DLC: ') + dlc.title"></app-anno-icon>
+
+    <app-anno-icon *ngFor="let dlc of mod.DLCs_leastOneNeeded"
+                   class="pull-right"
+                   [warning]="true"
+                   [icon]="dlc.name"
+                   [title]="dlc.title"></app-anno-icon>
+    &nbsp;
+  </div>
   <mat-card-content>
     <app-anno-split [small]="true" [fade]="true" [borderBottom]="false" [borderTop]="false" [inset]="false"
                     [diamond]="false"></app-anno-split>
 
-    <div class="req_dlcs">
-      <app-anno-icon *ngFor="let dlc of mod.DLCs_required"
-                     [class.pull-right]="!dlc.isActive"
-                     [alert]="!dlc.isActive"
-                     [icon]="dlc.name"
-                     [title]="dlc.title"></app-anno-icon>
 
-      <app-anno-icon *ngFor="let dlc of mod.DLCs_leastOneNeeded"
-                     class="pull-right"
-                     [warning]="true"
-                     [icon]="dlc.name"
-                     [title]="dlc.title"></app-anno-icon>
-    </div>
     <mat-progress-bar *ngIf="mod.locked|async" mode="indeterminate"></mat-progress-bar>
     <p>
       {{mod.description}}
@@ -65,6 +74,10 @@
     <button mat-button (click)="active=!active;">
       <mat-icon *ngIf="!active">keyboard_arrow_down</mat-icon>
       <mat-icon *ngIf="active">keyboard_arrow_up</mat-icon>
+    </button>
+
+    <button mat-button (click)="toggleSelected()">
+      <mat-icon>aspect_ratio</mat-icon>
     </button>
   </mat-card-footer>
 </mat-card>

@@ -32,6 +32,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -44,36 +45,37 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     AnnoIconComponent,
     DropModDirective
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
-    MatGridListModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCommonModule,
-    MatCardModule,
-    MatDividerModule,
-    MatProgressBarModule,
-    MatCheckboxModule,
-    FormsModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        }),
+        MatGridListModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatCommonModule,
+        MatCardModule,
+        MatDividerModule,
+        MatProgressBarModule,
+        MatCheckboxModule,
+        FormsModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatButtonToggleModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

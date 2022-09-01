@@ -11,25 +11,70 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+
+
+    <button mat-icon-button (click)="activeFilterChange()">
+      <mat-icon title="show activated and deactivated"
+                style="opacity: 0.5"
+                *ngIf="filterEnabledOnly===null">
+        toggle_on
+      </mat-icon>
+      <mat-icon title="show activated mods"
+                style="transform: rotate(90deg)"
+                *ngIf="filterEnabledOnly===true">
+        toggle_off
+      </mat-icon>
+      <mat-icon title="show deactivated mods"
+                style="transform: rotate(90deg)"
+                *ngIf="filterEnabledOnly ===false">
+        toggle_on
+      </mat-icon>
+    </button>
+
+
+    <button mat-icon-button (click)="dlcFilterChange()">
+      <mat-icon title="dont filter requirements"
+                style="opacity: 0.5"
+                *ngIf="filterDlcReady===null">
+        flaky
+      </mat-icon>
+      <mat-icon title="show only mods who's requirements are met"
+                *ngIf="filterDlcReady===true">
+        verified
+      </mat-icon>
+      <mat-icon title="show only mods where requirements aren't met"
+                style="text-shadow: 1px 1px 5px red"
+                *ngIf="filterDlcReady ===false">
+        unpublished
+      </mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="viewSlim=!viewSlim">
+      <mat-icon title="switch to list view" *ngIf="!viewSlim">view_headline</mat-icon>
+      <mat-icon title="switch to card view" *ngIf="viewSlim">view_module</mat-icon>
+    </button>
+
+
+    <button mat-icon-button>
       <mat-icon>favorite</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
-            (click)="state='settings'">
+
+
+    <button mat-icon-button (click)="state='settings'">
       <mat-icon>settings</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
-            (click)="refresh()">
+    <button mat-icon-button (click)="refresh()">
       <mat-icon>refresh</mat-icon>
     </button>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline" style="width: 10em">
       <mat-label>Language</mat-label>
       <span matPrefix><mat-icon>language</mat-icon></span>
       <mat-select [(ngModel)]="annoModRef.lng">
         <mat-option *ngFor="let lng of annoModRef.lngs" [value]="lng">{{lng}}</mat-option>
       </mat-select>
     </mat-form-field>
+
   </div>
 
 </mat-toolbar>
@@ -47,7 +92,12 @@
 
   <app-settings *ngIf="state=='settings'" (close)="closeSettings()"></app-settings>
 
-  <app-mod-list appDropMod (fileDropped)="uploadedFile($event)" *ngIf="state=='home'"
+  <app-mod-list appDropMod
+                (fileDropped)="uploadedFile($event)"
+                *ngIf="state=='home'"
+                [slim]="viewSlim"
+                [enabledFilter]="filterEnabledOnly"
+                [dlcFilter]="filterDlcReady"
                 [searchTerm]="searchTerm"></app-mod-list>
 
   <div class="backdrop"></div>

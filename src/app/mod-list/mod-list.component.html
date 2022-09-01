@@ -1,5 +1,9 @@
 <div *ngIf="cardView" class="anno-mods anno-mods-cards">
-  <app-mod-list-item *ngFor="let mod of sortedMods()" [mod]="mod"></app-mod-list-item>
+  <app-mod-list-item *ngFor="let mod of sortedMods()"
+                     [slim]="slim"
+                     [mod]="mod"
+                     [(selected)]="selected">
+  </app-mod-list-item>
 </div>
 
 <div *ngIf="!cardView" class="anno-mods anno-table">
